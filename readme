@@ -1,6 +1,6 @@
-Credit Card Transaction Risk Analysis
+# Credit Card Transaction Risk Analysis
 
-Project Overview
+## Project Overview
 
 This project analyzes large scale credit card transaction data to identify behavioral patterns associated with elevated transaction errors, used as a proxy for transaction risk.
 
@@ -9,135 +9,79 @@ The objective is not to build a machine learning model, but to uncover structure
 The analysis focuses on extracting incremental risk indicators rather than binary fraud detection.
 
 
-Problem Statement
+## Problem Statement
 
 Financial institutions must detect abnormal or risky transactions without unnecessarily blocking legitimate customers.
 
 This project explores transaction level data to identify patterns that increase abnormal transaction likelihood and proposes a cumulative risk scoring approach.
 
 
-Dataset Overview
+## Dataset Overview
 
-- Approximately 13 million transactions
-- 12 columns
-- Around 1.2 GB memory usage
-- Key columns include:
+- Approximately 13 million transactions  
+- 12 columns  
+- Around 1.2 GB memory usage  
 
-  id  
-  date  
-  client_id  
-  card_id  
-  amount  
-  use_chip (Chip, Swipe, Online)  
-  merchant_id  
-  merchant_city  
-  merchant_state  
-  mcc (Merchant Category Code)  
-  errors  
+Key columns include:
 
-A risk flag named has_error was created based on the presence of transaction errors.
-
-
-Data Preprocessing
-
-- Converted date column to datetime format
-- Cleaned and converted transaction amounts to numeric format
-- Created has_error feature from error column
-- Extracted hour from timestamp
-- Created time bucket categories (Morning, Afternoon, Evening, Night)
-- Generated high value transaction flag using 95th percentile threshold
-- Created high velocity transaction feature (4 or more transactions per card per hour)
-- Filtered low volume merchants to reduce noise
+- id  
+- date  
+- client_id  
+- card_id  
+- amount  
+- use_chip  
+- merchant_id  
+- merchant_city  
+- merchant_state  
+- mcc  
+- errors  
 
 
-Key Questions Explored
+## Feature Engineering
 
-- Does transaction amount indicate higher risk?
-- Does time of day influence abnormal transaction rates?
-- Does payment method affect error likelihood?
-- Do certain geographic locations show elevated error rates?
-- Do specific merchants appear riskier than others?
-- Does transaction velocity increase abnormal activity?
-- What simple rule based system could flag risky transactions?
+- Time bucket categorization (Morning, Afternoon, Evening, Night)  
+- High value transaction flag (95th percentile threshold)  
+- High velocity detection (4 or more transactions per hour per card)  
+- Merchant level risk aggregation  
+- MCC level clustering  
+- Volume based filtering  
 
 
-Key Findings
+## Key Findings
 
-- Higher transaction amounts show structurally higher median error rates. Risk increases across distribution levels rather than only extreme outliers.
-
+- Higher transaction amounts show structurally higher median error rates.
 - Online transactions exhibit significantly higher abnormal rates compared to chip and swipe transactions.
-
-- Certain merchant IDs consistently show elevated error rates even after filtering for transaction volume.
-
-- Specific Merchant Category Codes cluster around higher error rates, suggesting industry level risk patterns.
-
-- High transaction velocity (4 or more transactions within an hour) moderately increases risk.
-
-- Time of day shows only mild variation and is not a strong standalone risk factor.
-
-- Overall, risk is influenced by a combination of signals rather than a single attribute.
+- Certain merchant IDs consistently show elevated error rates.
+- Specific MCC categories cluster around higher error rates.
+- High transaction velocity moderately increases risk.
+- Time of day is not a strong standalone risk factor.
+- Risk is driven by combined signals rather than a single attribute.
 
 
-Feature Engineering Performed
-
-- Time bucket categorization
-- High value transaction flag (95th percentile threshold)
-- High velocity transaction detection
-- Merchant level risk aggregation
-- Merchant Category Code level clustering
-- Volume based filtering for noise reduction
-
-
-Suggested Risk Scoring Framework
+## Suggested Risk Framework
 
 Instead of binary blocking, a cumulative scoring approach is recommended.
 
-Example contributing signals:
+Example signals:
 
-- Online transaction
-- High transaction amount
-- High transaction velocity
-- High risk merchant or MCC
+- Online transaction  
+- High transaction amount  
+- High transaction velocity  
+- High risk merchant or MCC  
 
-Transactions exceeding a defined cumulative risk threshold should be escalated for additional verification rather than automatically blocked. This reduces false positives while maintaining security.
-
-
-Tech Stack
-
-- Python
-- Pandas
-- Matplotlib
-- Jupyter Notebook
+Transactions exceeding a cumulative threshold should be escalated for verification rather than automatically blocked.
 
 
-Business Impact
+## Tech Stack
 
-This project demonstrates how structured exploratory data analysis and feature engineering can uncover meaningful risk signals at scale.
-
-It shows how analytical reasoning can translate transaction level data into actionable insights for fraud monitoring and risk management systems.
-
-
-Project Structure
-
-credit-card-transaction-risk-analysis/
-|
-|-- transaction_risk_analysis.ipynb
-|-- transactions_data.csv
-|-- README.md
+- Python  
+- Pandas  
+- Matplotlib  
+- Jupyter Notebook  
 
 
-How to Run
-
-1. Clone the repository
-2. Install required libraries:
-   pip install pandas matplotlib
-3. Launch Jupyter Notebook:
-   jupyter notebook transaction_risk_analysis.ipynb
-
-
-Conclusion
+## Conclusion
 
 Transaction risk is not random. It is influenced by structured behavioral patterns including payment channel, transaction amount, merchant characteristics, and transaction velocity.
 
-Combining multiple incremental signals into a scoring system provides a more balanced and operationally practical risk monitoring strategy.
-
+Combining incremental signals into a scoring system provides a balanced and operationally practical fraud monitoring strategy.
