@@ -1,87 +1,109 @@
 # Credit Card Transaction Risk Analysis
 
+Large-Scale Behavioral Risk Signal Discovery (13 Million Transactions)
+
+---
+
 ## Project Overview
 
-This project analyzes large scale credit card transaction data to identify behavioral patterns associated with elevated transaction errors, used as a proxy for transaction risk.
+This project analyzes large-scale credit card transaction data to identify behavioral patterns associated with elevated transaction errors, used as a proxy for transaction risk.
 
-The objective is not to build a machine learning model, but to uncover structured risk signals that can support rule based fraud monitoring systems.
+Rather than building a machine learning model, the focus is on extracting structured risk signals that can strengthen rule-based fraud monitoring systems.
 
-The analysis focuses on extracting incremental risk indicators rather than binary fraud detection.
+The analysis emphasizes incremental risk contribution instead of binary fraud labeling.
 
+---
 
 ## Problem Statement
 
 Financial institutions must detect abnormal or risky transactions without unnecessarily blocking legitimate customers.
 
-This project explores transaction level data to identify patterns that increase abnormal transaction likelihood and proposes a cumulative risk scoring approach.
+This project explores transaction-level data to uncover patterns that increase abnormal transaction likelihood and proposes a cumulative risk scoring framework.
 
+---
 
 ## Dataset Overview
 
-- Approximately 13 million transactions  
-- 12 columns  
-- Around 1.2 GB memory usage  
+- Approximately 13 million transactions
+- 12 columns
+- ~1.2 GB memory usage
+- Multi-year transaction history
 
-Key columns include:
+Key fields analyzed:
 
-- id  
-- date  
-- client_id  
-- card_id  
-- amount  
-- use_chip  
-- merchant_id  
-- merchant_city  
-- merchant_state  
-- mcc  
-- errors  
+- Transaction amount
+- Timestamp
+- Payment method (Chip, Swipe, Online)
+- Merchant ID
+- Merchant State and City
+- Merchant Category Code (MCC)
+- Error indicator
 
+A risk flag named `has_error` was engineered from the error column.
+
+---
 
 ## Feature Engineering
 
-- Time bucket categorization (Morning, Afternoon, Evening, Night)  
-- High value transaction flag (95th percentile threshold)  
-- High velocity detection (4 or more transactions per hour per card)  
-- Merchant level risk aggregation  
-- MCC level clustering  
-- Volume based filtering  
+- Time bucket categorization (Morning, Afternoon, Evening, Night)
+- High-value transaction flag (95th percentile threshold)
+- High-velocity detection (4+ transactions per card per hour)
+- Merchant-level risk aggregation
+- MCC-level clustering analysis
+- Volume-based filtering to reduce noise from low-activity merchants
 
+---
 
-## Key Findings
+## Results Snapshot
 
 - Higher transaction amounts show structurally higher median error rates.
-- Online transactions exhibit significantly higher abnormal rates compared to chip and swipe transactions.
-- Certain merchant IDs consistently show elevated error rates.
-- Specific MCC categories cluster around higher error rates.
-- High transaction velocity moderately increases risk.
-- Time of day is not a strong standalone risk factor.
-- Risk is driven by combined signals rather than a single attribute.
+- Online transactions exhibit significantly higher abnormal rates than chip and swipe transactions.
+- Certain high-volume merchants consistently show elevated error rates.
+- Specific MCC categories cluster around higher risk levels.
+- High transaction velocity moderately increases abnormal activity.
+- Time of day alone is not a strong standalone risk indicator.
+- Risk is driven by multi-signal interaction rather than a single attribute.
 
+---
 
-## Suggested Risk Framework
+## Risk Scoring Framework Proposal
 
 Instead of binary blocking, a cumulative scoring approach is recommended.
 
-Example signals:
+Contributing signals may include:
 
-- Online transaction  
-- High transaction amount  
-- High transaction velocity  
-- High risk merchant or MCC  
+- Online transaction channel
+- High transaction amount
+- High transaction velocity
+- High-risk merchant or MCC category
 
-Transactions exceeding a cumulative threshold should be escalated for verification rather than automatically blocked.
+Transactions exceeding a cumulative threshold should be escalated for verification rather than automatically blocked.  
+This reduces false positives while maintaining strong security controls.
 
+---
 
 ## Tech Stack
 
-- Python  
-- Pandas  
-- Matplotlib  
-- Jupyter Notebook  
+- Python
+- Pandas
+- Matplotlib
+- Jupyter Notebook
 
+---
+
+## Business Impact
+
+This project demonstrates how structured exploratory analysis and feature engineering at scale can uncover meaningful behavioral risk signals.
+
+It translates raw transaction-level data into actionable insights suitable for fraud monitoring and risk management systems.
+
+---
 
 ## Conclusion
 
-Transaction risk is not random. It is influenced by structured behavioral patterns including payment channel, transaction amount, merchant characteristics, and transaction velocity.
+Transaction risk is not random.
 
-Combining incremental signals into a scoring system provides a balanced and operationally practical fraud monitoring strategy.
+It is influenced by structured behavioral factors including payment channel, transaction amount, merchant characteristics, and transaction velocity.
+
+Combining incremental signals into a layered scoring system creates a more operationally practical and balanced fraud detection strategy.
+
